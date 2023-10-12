@@ -12,6 +12,7 @@ Things you may want to cover:
 * Configuration
 
 * Database creation
+  create MySQL user zipper, password
 
 * Database initialization
 
