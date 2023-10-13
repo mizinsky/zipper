@@ -2,7 +2,7 @@
 
 class JsonWebToken
   def self.encode(payload)
-    JWT.encode payload.merge(exp: 2.minutes.from_now.to_i), Rails.application.credentials.secret_key_base
+    JWT.encode payload.merge(exp: 15.minutes.from_now.to_i), Rails.application.credentials.secret_key_base
   end
 
   def self.decode(token)

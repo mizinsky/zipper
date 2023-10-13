@@ -8,7 +8,7 @@ module Api
       user = User.find_by(email: params[:user][:email])
 
       if user.valid_password? params[:user][:password]
-        render json: { token: JsonWebToken.encode(sub: user.id) }
+        render json: { token: JsonWebToken.encode(user_id: user.id) }
       else
         render json: { errors: ['Invalid credentials'] }
       end

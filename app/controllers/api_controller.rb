@@ -15,6 +15,7 @@ class ApiController < ApplicationController
 
   def authenticate_token!
     payload = JsonWebToken.decode(auth_token)
+
     if payload.present?
       @current_user = User.find(payload['user_id'])
     else
