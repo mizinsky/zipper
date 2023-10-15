@@ -1,16 +1,26 @@
 # frozen_string_literal: true
 
+require 'zip'
+
 module Api
   class FilesController < ApiController
     def create
-      current_user.files.attach(params[:file])
-      file = current_user.files.last
+      password = SecureRandom.hex(4)
+
+      archive = Archiver.zip(params[:file], password)
+      filename = params[:file].original_filename
+
+      current_user.files.attach(io: File.open(archive.path), filename: "#{filename}.zip",
+                                content_type: 'application/zip')
+
+      archive.close
+      archive.unlink
 
       render json: {
-        filename: file.filename.to_s,
-        link: rails_blob_url(file),
-        password: 'TODO'
-      }, status: :ok
+        message: "File '#{filename}' uploaded and archived with password successfully.",
+        download_url: url_for(current_user.files.last),
+        password:
+      }, status: :created
     end
 
     def index

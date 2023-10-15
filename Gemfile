@@ -66,3 +66,4 @@ end
 
 gem "devise"
 gem "jwt"
+gem "rubyzip", "3.0.0.alpha"
