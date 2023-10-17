@@ -8,6 +8,12 @@ module Api
       password = SecureRandom.hex(4)
 
       archive = Archiver.zip(params[:file], password)
+
+      unless archive
+        render json: { error: 'invalid request' }, status: :unprocessable_entity
+        return
+      end
+
       filename = params[:file].original_filename
 
       current_user.files.attach(io: File.open(archive.path), filename: "#{filename}.zip",

@@ -4,6 +4,35 @@ info:
   title: API V1
   version: v1
 paths:
+  "/api/files":
+    get:
+      summary: Retrieves files
+      tags:
+      - Files
+      security:
+      - bearer: []
+      responses:
+        '200':
+          description: ok
+    post:
+      summary: Creates a file
+      tags:
+      - Files
+      parameters: []
+      security:
+      - bearer: []
+      responses:
+        '201':
+          description: created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: file
+        required: true
+        description: File to be uploaded
   "/api/login":
     post:
       summary: Create Token
@@ -36,3 +65,10 @@ paths:
 servers:
 - url: http://localhost:3000
   variables: {}
+components:
+  securitySchemes:
+    bearer:
+      description: JWT key
+      type: bearer
+      name: Authorization
+      in: header

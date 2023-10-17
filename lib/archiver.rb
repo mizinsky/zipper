@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-# lib/archiver.rb
 require 'zip'
 
 class Archiver
   def self.zip(file, password)
+    return unless file.is_a? ActionDispatch::Http::UploadedFile
+    return unless password.is_a? String
+
     temp_file = Tempfile.new(['archive', '.zip'])
 
     begin

@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-RSpec.describe 'Login', type: :request do
+RSpec.describe 'api/login', type: :request do
   path '/api/login' do
     post 'Create Token' do
       tags 'Login'

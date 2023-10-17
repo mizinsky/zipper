@@ -27,7 +27,17 @@ RSpec.configure do |config|
           url: 'http://localhost:3000',
           variables: {}
         }
-      ]
+      ],
+      components: {
+        securitySchemes: {
+          bearer: {
+            description: 'JWT key',
+            type: :bearer,
+            name: 'Authorization',
+            in: :header
+          }
+        }
+      }
     }
   }
 
