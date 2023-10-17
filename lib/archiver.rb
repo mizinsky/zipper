@@ -4,7 +4,7 @@ require 'zip'
 
 class Archiver
   def self.zip(file, password)
-    return unless file.is_a? ActionDispatch::Http::UploadedFile
+    return unless file.respond_to?(:original_filename) && file.respond_to?(:rewind) && file.respond_to?(:read)
     return unless password.is_a? String
 
     temp_file = Tempfile.new(['archive', '.zip'])
