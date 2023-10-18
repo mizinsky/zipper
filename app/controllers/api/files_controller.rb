@@ -24,7 +24,7 @@ module Api
 
       render json: {
         message: "File '#{filename}' uploaded and archived with password successfully.",
-        download_url: url_for(current_user.files.last),
+        url: url_for(current_user.files.last),
         password:
       }, status: :created
     end
