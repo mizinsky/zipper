@@ -5,28 +5,14 @@ require 'zip'
 module Api
   class FilesController < ApiController
     def create
-      password = SecureRandom.hex(4)
+      url_generator = -> (file) { url_for(file) }
+      result = ArchiveService.create_archive(params[:file], current_user, url_generator)
 
-      archive = Archiver.zip(params[:file], password)
-
-      unless archive
+      if result
+        render json: result, status: :created
+      else
         render json: { error: 'invalid request' }, status: :unprocessable_entity
-        return
       end
-
-      filename = params[:file].original_filename
-
-      current_user.files.attach(io: File.open(archive.path), filename: "#{filename}.zip",
-                                content_type: 'application/zip')
-
-      archive.close
-      archive.unlink
-
-      render json: {
-        message: "File '#{filename}' uploaded and archived with password successfully.",
-        url: url_for(current_user.files.last),
-        password:
-      }, status: :created
     end
 
     def index
