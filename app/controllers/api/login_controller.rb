@@ -10,7 +10,7 @@ module Api
       if user&.valid_password? params[:user][:password]
         render json: { token: JsonWebToken.encode(user_id: user.id) }
       else
-        render json: { errors: ['Invalid credentials'] }, status: :unauthorized
+        render json: { error: 'Invalid credentials' }, status: :unauthorized
       end
     end
   end

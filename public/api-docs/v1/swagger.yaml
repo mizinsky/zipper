@@ -14,6 +14,20 @@ paths:
       responses:
         '200':
           description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    filename:
+                      type: string
+                    url:
+                      type: string
+                  required:
+                  - filename
+                  - url
     post:
       summary: Creates a file
       tags:
@@ -24,8 +38,32 @@ paths:
       responses:
         '201':
           description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  url:
+                    type: string
+                  password:
+                    type: string
+                required:
+                - message
+                - url
+                - password
         '422':
           description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           multipart/form-data:
@@ -42,8 +80,26 @@ paths:
       responses:
         '200':
           description: token received
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                required:
+                - token
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:

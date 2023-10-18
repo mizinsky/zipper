@@ -7,6 +7,7 @@ RSpec.describe 'api/login', type: :request do
     post 'Create Token' do
       tags 'Login'
       consumes 'application/json'
+      produces 'application/json'
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
@@ -23,6 +24,12 @@ RSpec.describe 'api/login', type: :request do
       }
 
       response '200', 'token received' do
+        schema type: :object,
+               properties: {
+                 token: { type: :string }
+               },
+               required: ['token']
+
         let(:created_user) { create(:user) }
         let(:user) { { user: { email: created_user.email, password: created_user.password } } }
 
@@ -33,6 +40,12 @@ RSpec.describe 'api/login', type: :request do
       end
 
       response '401', 'unauthorized' do
+        schema type: :object,
+               properties: {
+                 error: { type: :string }
+               },
+               required: ['error']
+
         let(:user) { { user: { email: 'user@example.com', password: '' } } }
         run_test!
       end

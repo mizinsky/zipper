@@ -14,6 +14,15 @@ RSpec.describe 'api/files', type: :request do
       security [bearer: []]
 
       response '200', 'ok' do
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: {
+                   filename: { type: :string },
+                   url: { type: :string }
+                 },
+                 required: %w[filename url]
+               }
         run_test!
       end
     end
@@ -21,10 +30,19 @@ RSpec.describe 'api/files', type: :request do
     post 'Creates a file' do
       tags 'Files'
       consumes 'multipart/form-data'
+      produces 'application/json'
       parameter name: :file, in: :formData, type: :file, required: true, description: 'File to be uploaded'
       security [bearer: []]
 
       response '201', 'created' do
+        schema type: :object,
+               properties: {
+                 message: { type: :string },
+                 url: { type: :string },
+                 password: { type: :string }
+               },
+               required: %w[message url password]
+
         let(:file) { fixture_file_upload('test_file.txt', 'text/plain') }
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -33,6 +51,12 @@ RSpec.describe 'api/files', type: :request do
       end
 
       response '422', 'invalid request' do
+        schema type: :object,
+               properties: {
+                 error: { type: :string }
+               },
+               required: ['error']
+
         let(:file) { nil }
         run_test!
       end
