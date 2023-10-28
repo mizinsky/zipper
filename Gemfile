@@ -49,6 +49,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem "rswag-specs"
 end
 
 group :development do
@@ -64,3 +65,8 @@ group :development do
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end
 
+gem "devise"
+gem "jwt"
+gem "rubyzip", "3.0.0.alpha"
+gem "rswag-api"
+gem "rswag-ui"

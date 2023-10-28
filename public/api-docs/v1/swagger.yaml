@@ -1,0 +1,130 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/files":
+    get:
+      summary: Retrieves files
+      tags:
+      - Files
+      security:
+      - bearer: []
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    filename:
+                      type: string
+                    url:
+                      type: string
+                  required:
+                  - filename
+                  - url
+    post:
+      summary: Creates a file
+      tags:
+      - Files
+      parameters: []
+      security:
+      - bearer: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  url:
+                    type: string
+                  password:
+                    type: string
+                required:
+                - message
+                - url
+                - password
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: file
+        required: true
+        description: File to be uploaded
+  "/api/login":
+    post:
+      summary: Create Token
+      tags:
+      - Login
+      parameters: []
+      responses:
+        '200':
+          description: token received
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                required:
+                - token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - password
+              required:
+              - user
+servers:
+- url: http://localhost:3000
+  variables: {}
+components:
+  securitySchemes:
+    bearer:
+      description: JWT key
+      type: bearer
+      name: Authorization
+      in: header
